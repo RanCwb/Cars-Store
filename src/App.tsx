@@ -6,6 +6,7 @@ import { Dashboard } from "./pages/Dashboard";
 import { New } from "./pages/Dashboard/New";
 import { Login } from "./pages/Login";
 import { Register } from "./pages/Register";
+import { PrivateRoute } from "./routes/Private";
 
 export const router = createBrowserRouter([
   {
@@ -19,17 +20,17 @@ export const router = createBrowserRouter([
       },
       {
         path: "/car/:id",
-        element: <CartDetail />,
+        element: <PrivateRoute children={<CartDetail />} />,
       },
 
       {
         path: "/dashboard",
-        element: <Dashboard />,
+        element: <PrivateRoute children={<Dashboard />} />,
       },
 
       {
         path: "/dashboard/new",
-        element: <New />,
+        element: <PrivateRoute children={<New />} />,
       },
     ],
   },

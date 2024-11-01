@@ -1,11 +1,18 @@
-import react from "react";
+import react, { useEffect, useContext } from "react";
 import logo from "../../assets/logo.svg";
 import { Container } from "../../components/container";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Input } from "../../components/Input";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { AuthContext } from "../../context/AuthContext";
+import {
+  createUserWithEmailAndPassword,
+  signOut,
+  updateProfile,
+} from "firebase/auth";
+import { auth } from "../../services/firebaseConnection";
 
 const schema = z.object({
   email: z.string().email("Email inválido").min(1, "Email obrigatório"),
@@ -20,6 +27,9 @@ const schema = z.object({
 type FormData = z.infer<typeof schema>;
 
 export function Register() {
+  const { handleInformation } = useContext(AuthContext);
+
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -29,8 +39,34 @@ export function Register() {
     mode: "onChange",
   });
 
-  function onSubmit(data: FormData) {
-    console.log(data);
+  useEffect(() => {
+    async function checkLogin() {
+      await signOut(auth);
+    }
+    checkLogin();
+  }, []);
+
+  async function onSubmit(data: FormData) {
+    try {
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        data.email,
+        data.password
+      );
+      await updateProfile(userCredential.user, {
+        displayName: data.name,
+      });
+
+      handleInformation({
+        name: data.name,
+        email: data.email,
+        uid: userCredential.user.uid,
+      });
+
+      navigate("/dashboard", { replace: true });
+    } catch (error) {
+      console.log("error", error);
+    }
   }
 
   return (
@@ -79,7 +115,7 @@ export function Register() {
           </button>
         </form>
         <p className="text-zinc-500">
-          Ja possui uma conta? <Link to={"/register"}>Clique aqui!</Link>
+          Ja possui uma conta? <Link to={"/login"}>Clique aqui!</Link>
         </p>
       </div>
     </Container>
