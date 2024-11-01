@@ -7,7 +7,6 @@ Uma plataforma completa para anúncios de carros, desenvolvida com **React** e *
 - **Autenticação de Usuário** (Firebase Auth)
 - **Listagem e Pesquisa de Veículos**
 - **Anúncio de Novos Veículos** com imagens e detalhes completos
-- **Chat em Tempo Real** entre compradores e vendedores
 - **Notificações Push** para o aplicativo mobile (via Firebase Cloud Messaging)
 
 ## 🛠️ Tecnologias Utilizadas
