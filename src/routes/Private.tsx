@@ -6,11 +6,14 @@ export function PrivateRoute({ children }: { children: ReactNode }) {
   const { singnedIn, loadingAuth } = useContext(AuthContext);
 
   if (loadingAuth) {
-    return <div>Carregando...</div>;
+    return (
+      <div className="flex justify-center text-black font-bold">
+        Carregando...
+      </div>
+    );
   }
   if (!singnedIn) {
     return <Navigate to="/login" />;
   }
-
   return <>{children}</>;
 }

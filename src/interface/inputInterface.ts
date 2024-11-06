@@ -19,3 +19,10 @@ export interface UserProps {
 export interface AuthProviderProps {
   children: ReactNode;
 }
+
+export interface ImageProps {
+  name: string;
+  uid: string;
+  url: string;
+  previewUrl: string;
+}
